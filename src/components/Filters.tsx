@@ -25,11 +25,13 @@ const Filters: React.FC<FiltersProps> = ({
 				placeholder="Search by name"
 				onChange={(e) => onNameChange(e.target.value)}
 				className="filter-input"
+				aria-label="Search by name"
 			/>
 			<select
 				id="city-dropdown"
 				onChange={(e) => onCityChange(e.target.value)}
 				className="filter-dropdown"
+				aria-label="Filter by city"
 			>
 				<option value="">Select city</option>
 				{cities.map((city) => (
