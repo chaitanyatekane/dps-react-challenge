@@ -19,6 +19,7 @@ const App: React.FC = () => {
 	const [debouncedNameFilter, setDebouncedNameFilter] = useState('');
 	const [cityFilter, setCityFilter] = useState('');
 	const [highlightOldest, setHighlightOldest] = useState(false);
+	const [noResultsMessage, setNoResultsMessage] = useState('');
 
 	// Fetch customers from API
 	useEffect(() => {
@@ -60,11 +61,29 @@ const App: React.FC = () => {
 			);
 		}
 		setFilteredCustomers(filtered);
+		// Set no results message
+		if (filtered.length === 0) {
+			if (debouncedNameFilter && cityFilter) {
+				setNoResultsMessage(
+					`No customers found matching "${debouncedNameFilter}" in "${cityFilter}".`
+				);
+			} else if (debouncedNameFilter) {
+				setNoResultsMessage(
+					`No customers found matching "${debouncedNameFilter}".`
+				);
+			} else if (cityFilter) {
+				setNoResultsMessage(`No customers found in "${cityFilter}".`);
+			} else {
+				setNoResultsMessage('No customers found.');
+			}
+		} else {
+			setNoResultsMessage('');
+		}
 	}, [debouncedNameFilter, cityFilter, customers]);
 
 	// Highlight oldest customers per city
 	const highlightedIds = new Set<number>();
-	if (highlightOldest) {
+	if (highlightOldest && filteredCustomers.length > 0) {
 		const oldestByCity = new Map<string, Customer>();
 		filteredCustomers.forEach((customer) => {
 			const currentOldest = oldestByCity.get(customer.city);
@@ -78,6 +97,12 @@ const App: React.FC = () => {
 		oldestByCity.forEach((customer) => highlightedIds.add(customer.id));
 	}
 
+	// Set message when no customers exist for highlight
+	const highlightMessage =
+		highlightOldest && filteredCustomers.length === 0
+			? 'No customers to highlight for the selected filters.'
+			: '';
+
 	return (
 		<div className="app">
 			<h1>Customer Management</h1>
@@ -90,6 +115,8 @@ const App: React.FC = () => {
 					...new Set(customers.map((customer) => customer.city)),
 				]}
 			/>
+			{noResultsMessage && <p className="message">{noResultsMessage}</p>}
+			{highlightMessage && <p className="message">{highlightMessage}</p>}
 			<CustomerTable
 				customers={filteredCustomers}
 				highlightedIds={highlightedIds}
