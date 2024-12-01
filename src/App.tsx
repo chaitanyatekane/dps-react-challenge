@@ -179,7 +179,7 @@ const App: React.FC = () => {
 							setSelectedCustomer(customer as Customer)
 						}
 					/>
-					;
+
 					{selectedCustomer && (
 						<ProfileModal
 							customer={selectedCustomer}
