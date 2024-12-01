@@ -6,7 +6,7 @@ This project implements a React-based web application for managing customer data
 
 ## Demo
 
-[Watch the demo video](src/assets/Demo.mp4)
+[Watch the demo video](https://youtu.be/gB_mQvX3mww)
 
 [![Demo Video](https://img.youtube.com/vi/gB_mQvX3mww/0.jpg)](https://youtu.be/gB_mQvX3mww)
 
