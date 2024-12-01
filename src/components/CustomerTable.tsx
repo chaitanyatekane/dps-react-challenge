@@ -6,16 +6,20 @@ interface Customer {
 	lastName: string;
 	city: string;
 	birthDate: string;
+	email: string;
+	phone: string;
 }
 
 interface CustomerTableProps {
 	customers: Customer[];
 	highlightedIds: Set<number>;
+	onViewProfile: (customer: Customer) => void;
 }
 
 const CustomerTable: React.FC<CustomerTableProps> = ({
 	customers,
 	highlightedIds,
+	onViewProfile,
 }) => {
 	return (
 		<table className="customer-table">
@@ -24,6 +28,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
 					<th>Name</th>
 					<th>City</th>
 					<th>Birthday</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,6 +42,14 @@ const CustomerTable: React.FC<CustomerTableProps> = ({
 						<td>{`${customer.firstName} ${customer.lastName}`}</td>
 						<td>{customer.city}</td>
 						<td>{customer.birthDate}</td>
+						<td>
+							<button
+								onClick={() => onViewProfile(customer)}
+								className="view-profile-button"
+							>
+								View Profile
+							</button>
+						</td>
 					</tr>
 				))}
 			</tbody>

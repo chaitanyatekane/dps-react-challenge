@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Filters from './components/Filters';
 import CustomerTable from './components/CustomerTable';
+import ProfileModal from './components/ProfileModal';
 import './App.css';
 
 interface Customer {
@@ -10,6 +11,11 @@ interface Customer {
 	lastName: string;
 	city: string;
 	birthDate: string;
+	email: string;
+	phone: string;
+	address: string;
+	company: string;
+	username: string;
 }
 
 const App: React.FC = () => {
@@ -21,6 +27,9 @@ const App: React.FC = () => {
 	const [highlightOldest, setHighlightOldest] = useState(false);
 	const [noResultsMessage, setNoResultsMessage] = useState('');
 	const [loading, setLoading] = useState(true);
+	const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+		null
+	);
 
 	// Fetch customers from API
 	useEffect(() => {
@@ -32,6 +41,11 @@ const App: React.FC = () => {
 				lastName: user.lastName,
 				city: user.address.city,
 				birthDate: user.birthDate,
+				email: user.email,
+				phone: user.phone,
+				address: `${user.address.street}, ${user.address.city}, ${user.address.state}, ${user.address.zipcode}`,
+				company: user.company.name,
+				username: user.username,
 			}));
 			setCustomers(users);
 			setFilteredCustomers(users);
@@ -161,7 +175,17 @@ const App: React.FC = () => {
 					<CustomerTable
 						customers={filteredCustomers}
 						highlightedIds={highlightedIds}
+						onViewProfile={(customer) =>
+							setSelectedCustomer(customer as Customer)
+						}
 					/>
+					;
+					{selectedCustomer && (
+						<ProfileModal
+							customer={selectedCustomer}
+							onClose={() => setSelectedCustomer(null)}
+						/>
+					)}
 				</>
 			)}
 		</div>
