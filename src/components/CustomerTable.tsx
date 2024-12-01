@@ -1,6 +1,18 @@
 import React from 'react';
 
-const CustomerTable: React.FC = () => {
+interface Customer {
+	id: number;
+	firstName: string;
+	lastName: string;
+	city: string;
+	birthDate: string;
+}
+
+interface Props {
+	customers: Customer[];
+}
+
+const CustomerTable: React.FC<Props> = ({ customers }) => {
 	return (
 		<table className="customer-table">
 			<thead>
@@ -11,11 +23,13 @@ const CustomerTable: React.FC = () => {
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>John Doe</td>
-					<td>New York</td>
-					<td>1990-01-01</td>
-				</tr>
+				{customers.map((customer) => (
+					<tr key={customer.id}>
+						<td>{`${customer.firstName} ${customer.lastName}`}</td>
+						<td>{customer.city}</td>
+						<td>{customer.birthDate}</td>
+					</tr>
+				))}
 			</tbody>
 		</table>
 	);
