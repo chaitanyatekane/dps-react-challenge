@@ -1,19 +1,16 @@
-import dpsLogo from './assets/DPS.svg';
+import React from 'react';
+import Filters from './components/Filters';
+import CustomerTable from './components/CustomerTable';
 import './App.css';
 
-function App() {
+const App: React.FC = () => {
 	return (
-		<>
-			<div>
-				<a href="https://www.digitalproductschool.io/" target="_blank">
-					<img src={dpsLogo} className="logo" alt="DPS logo" />
-				</a>
-			</div>
-			<div className="home-card">
-				<p>Your solution goes here 😊</p>
-			</div>
-		</>
+		<div className="app">
+			<h1>Customer Management</h1>
+			<Filters />
+			<CustomerTable />
+		</div>
 	);
-}
+};
 
 export default App;
