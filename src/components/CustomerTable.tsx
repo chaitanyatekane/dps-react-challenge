@@ -8,11 +8,11 @@ interface Customer {
 	birthDate: string;
 }
 
-interface Props {
+interface CustomerTableProps {
 	customers: Customer[];
 }
 
-const CustomerTable: React.FC<Props> = ({ customers }) => {
+const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
 	return (
 		<table className="customer-table">
 			<thead>
