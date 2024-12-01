@@ -6,6 +6,7 @@ interface FiltersProps {
 	highlightOldest: boolean;
 	toggleHighlight: () => void;
 	cities: string[];
+	onReset: () => void;
 }
 
 const Filters: React.FC<FiltersProps> = ({
@@ -14,16 +15,19 @@ const Filters: React.FC<FiltersProps> = ({
 	highlightOldest,
 	toggleHighlight,
 	cities,
+	onReset,
 }) => {
 	return (
 		<div className="filters">
 			<input
+				id="name-filter"
 				type="text"
 				placeholder="Search by name"
 				onChange={(e) => onNameChange(e.target.value)}
 				className="filter-input"
 			/>
 			<select
+				id="city-dropdown"
 				onChange={(e) => onCityChange(e.target.value)}
 				className="filter-dropdown"
 			>
@@ -42,6 +46,9 @@ const Filters: React.FC<FiltersProps> = ({
 				/>
 				Highlight oldest per city
 			</label>
+			<button onClick={onReset} className="reset-button">
+				Reset
+			</button>
 		</div>
 	);
 };

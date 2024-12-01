@@ -24,6 +24,7 @@ const App: React.FC = () => {
 
 	// Fetch customers from API
 	useEffect(() => {
+		setLoading(true);
 		axios.get('https://dummyjson.com/users').then((response) => {
 			const users = response.data.users.map((user: any) => ({
 				id: user.id,
@@ -107,6 +108,29 @@ const App: React.FC = () => {
 			? 'No customers to highlight for the selected filters.'
 			: '';
 
+	const handleReset = () => {
+		setLoading(true);
+		setNoResultsMessage('');
+		setTimeout(() => {
+			setNameFilter('');
+			setCityFilter('');
+			setHighlightOldest(false);
+			setFilteredCustomers(customers);
+
+			const cityDropdown = document.getElementById(
+				'city-dropdown'
+			) as HTMLSelectElement;
+			const nameFilterInput = document.getElementById(
+				'name-filter'
+			) as HTMLInputElement;
+
+			if (cityDropdown) cityDropdown.value = '';
+			if (nameFilterInput) nameFilterInput.value = '';
+
+			setLoading(false);
+		}, 500);
+	};
+
 	return (
 		<div className="app">
 			<h1>Customer Management</h1>
@@ -126,6 +150,7 @@ const App: React.FC = () => {
 								customers.map((customer) => customer.city)
 							),
 						]}
+						onReset={handleReset}
 					/>
 					{noResultsMessage && (
 						<p className="message">{noResultsMessage}</p>
