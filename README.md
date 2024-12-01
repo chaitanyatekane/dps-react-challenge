@@ -2,43 +2,91 @@
 
 ## Overview
 
-This repository contains a very basic web application based on Typescript and React. Main application file is `App.tsx`. Node and npm are required.
+This project implements a React-based web application for managing customer data in a CRM system. It meets the challenge requirements, implements optional optimizations and adds extra features to enhance functionality and user experience. The project was structured with clean commits and branching strategies for clear progress tracking.
+
+## Demo
+
+[Watch the demo video](https://youtu.be/gB_mQvX3mww)
+
+[![Demo Video](https://img.youtube.com/vi/gB_mQvX3mww/0.jpg)](https://youtu.be/gB_mQvX3mww)
 
 ## Environment Setup
 
-Ensure you have Node.js (v14.x or later) and npm (v6.x or later) installed.  
-To set up and run the application, execute the following commands:
+(1). Ensure you have Node.js (v14.x or later) and npm (v6.x or later) installed.
+
+(2). Clone this repository:
+
+```
+git clone <your-repo-url>
+cd <project-folder>
+```
+
+(3). Install dependencies:
 
 ```
 npm install
+```
+
+(4). Start the development server:
+
+```
 npm run dev
 ```
 
-The application will then be accessible at http://localhost:3000.
+(5). Open the application in your browser at http://localhost:3000.
 
-## Project Context
+## Branching Strategy
 
-You will be enhancing a new CRM (Customer Relationship Management) software aimed at managing customer data efficiently. Your task is to develop a feature that displays a searchable list of customers.
+-   `master`: The main branch containing the final merged code.
+-   `v1`: A feature branch where all challenge tasks and additional features were implemented in small, incremental commits. After completing all tasks, the v1 branch was merged into master.
 
-Refer to the attached mockup image to guide your UI development 👇
+## Features Implemented
 
-![Mockup](images/mockup.png)
+### Mandatory Features
 
-## Challenge Tasks
+-   **UI Implementation**: Built a clean, responsive UI based on the mockup provided in the challenge. Included a table to display customer data with filters.
 
--   **Fork this project:** Start by forking this repository
--   **UI Implementation:** Implement the user interface according to the provided design mockup.
--   **Data Integration:** Utilize the endpoint https://dummyjson.com/users to fetch user data. If no filter is applied all data is displayed.
--   **Client-side Filtering:** Implement the following filters:
-    -   **Name Filter:** An input field that dynamically filters by `firstName` or `lastName` as you type.
-    -   **City Filter:** A dropdown that lists all cities present in the data. Users can select a city to filter the list accordingly.
-    -   **Highlight Feature:** A checkbox that when checked, highlights the oldest users within each city (use data field `city`)
-    -   **Optional:** Implement a 1-second debounce on the Name Filter input. This means the application should delay the filter action until 1 second has passed without any further input from the user. This optimization helps reduce the number of processing calls, enhancing performance.
--   **Submission:** After completing the challenge, email us the URL of your GitHub repository.
--   **Further information:**
-    -   If there is anything unclear regarding requirements, contact us by replying to our email.
-    -   Use small commits, we want to see your progress towards the solution.
-    -   Code clean and follow the best practices.
+-   **Data Integration**: Connected to the API endpoint https://dummyjson.com/users to fetch and display customer data dynamically.
 
-\
-Happy coding!
+-   **Client-side Filtering**:
+
+    -   Name Filter: A search input field to filter customers by firstName or lastName.
+    -   City Filter: A dropdown to filter customers by their city.
+
+-   **Highlight Oldest Users**: Implemented a checkbox that highlights the oldest user in each city.
+
+### Optional Features
+
+-   **Debounce on Name Filter**: Added a 1-second debounce to prevent frequent filtering and improve performance.
+
+### Extra Features
+
+-   **Error Messages**: Displayed user-friendly messages when no customers match the applied filters.
+
+-   **Loading State**: Displayed a `"Loading customers..."` message while fetching data from the API.
+
+-   **Profile Modal**: Added a `"View Profile"` button to each customer row, opening a modal with detailed customer information (e.g., `email`, `phone`, `address` and `company`). Modal closes when clicking outside or on the close button.
+
+-   **Reset Enhancements**: Reset button clears all filters, resets the dropdown to `"Select City"`, resets the `Name Filter input` and also resets the `highlight oldest per city`
+
+-   **Improved Styling**: Enhanced the visual appeal of the web app with better colors, hover effects and box shadows. Ensured consistent spacing and alignment.
+
+## Commit History
+
+Commit Logs (from v1 Branch)
+
+<img src="src/assets/Commits.png" alt="Commit History" width="600">
+
+## Submission
+
+The project includes:
+
+-   Required features (UI implementation, filtering, highlighting).
+
+-   Optional debounce feature.
+
+-   Extra features such as error messages, loading state, a profile modal, reset option, enhanced styling and responsiveness.
+
+The complete code and history are available in the repository, including the `master` and `v1` branches.
+
+Excited to work with Digital Product School! 😊
