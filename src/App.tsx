@@ -20,6 +20,7 @@ const App: React.FC = () => {
 	const [cityFilter, setCityFilter] = useState('');
 	const [highlightOldest, setHighlightOldest] = useState(false);
 	const [noResultsMessage, setNoResultsMessage] = useState('');
+	const [loading, setLoading] = useState(true);
 
 	// Fetch customers from API
 	useEffect(() => {
@@ -33,6 +34,7 @@ const App: React.FC = () => {
 			}));
 			setCustomers(users);
 			setFilteredCustomers(users);
+			setLoading(false);
 		});
 	}, []);
 
@@ -46,14 +48,16 @@ const App: React.FC = () => {
 
 	// Filter customers based on name and city
 	useEffect(() => {
+		if (loading) return;
+		const activeFilter = debouncedNameFilter || nameFilter;
 		let filtered = customers.filter(
 			(customer) =>
 				customer.firstName
 					.toLowerCase()
-					.includes(debouncedNameFilter.toLowerCase()) ||
+					.includes(activeFilter.toLowerCase()) ||
 				customer.lastName
 					.toLowerCase()
-					.includes(debouncedNameFilter.toLowerCase())
+					.includes(activeFilter.toLowerCase())
 		);
 		if (cityFilter) {
 			filtered = filtered.filter(
@@ -63,13 +67,13 @@ const App: React.FC = () => {
 		setFilteredCustomers(filtered);
 		// Set no results message
 		if (filtered.length === 0) {
-			if (debouncedNameFilter && cityFilter) {
+			if (activeFilter && cityFilter) {
 				setNoResultsMessage(
-					`No customers found matching "${debouncedNameFilter}" in "${cityFilter}".`
+					`No customers found matching "${activeFilter}" in "${cityFilter}".`
 				);
-			} else if (debouncedNameFilter) {
+			} else if (activeFilter) {
 				setNoResultsMessage(
-					`No customers found matching "${debouncedNameFilter}".`
+					`No customers found matching "${activeFilter}".`
 				);
 			} else if (cityFilter) {
 				setNoResultsMessage(`No customers found in "${cityFilter}".`);
@@ -79,7 +83,7 @@ const App: React.FC = () => {
 		} else {
 			setNoResultsMessage('');
 		}
-	}, [debouncedNameFilter, cityFilter, customers]);
+	}, [debouncedNameFilter, cityFilter, customers, loading]);
 
 	// Highlight oldest customers per city
 	const highlightedIds = new Set<number>();
@@ -106,21 +110,35 @@ const App: React.FC = () => {
 	return (
 		<div className="app">
 			<h1>Customer Management</h1>
-			<Filters
-				onNameChange={(value) => setNameFilter(value)}
-				onCityChange={(value) => setCityFilter(value)}
-				highlightOldest={highlightOldest}
-				toggleHighlight={() => setHighlightOldest(!highlightOldest)}
-				cities={[
-					...new Set(customers.map((customer) => customer.city)),
-				]}
-			/>
-			{noResultsMessage && <p className="message">{noResultsMessage}</p>}
-			{highlightMessage && <p className="message">{highlightMessage}</p>}
-			<CustomerTable
-				customers={filteredCustomers}
-				highlightedIds={highlightedIds}
-			/>
+			{loading ? (
+				<p className="message">Loading customers...</p>
+			) : (
+				<>
+					<Filters
+						onNameChange={(value) => setNameFilter(value)}
+						onCityChange={(value) => setCityFilter(value)}
+						highlightOldest={highlightOldest}
+						toggleHighlight={() =>
+							setHighlightOldest(!highlightOldest)
+						}
+						cities={[
+							...new Set(
+								customers.map((customer) => customer.city)
+							),
+						]}
+					/>
+					{noResultsMessage && (
+						<p className="message">{noResultsMessage}</p>
+					)}
+					{highlightMessage && (
+						<p className="message">{highlightMessage}</p>
+					)}
+					<CustomerTable
+						customers={filteredCustomers}
+						highlightedIds={highlightedIds}
+					/>
+				</>
+			)}
 		</div>
 	);
 };
