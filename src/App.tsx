@@ -16,6 +16,7 @@ const App: React.FC = () => {
 	const [customers, setCustomers] = useState<Customer[]>([]);
 	const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
 	const [nameFilter, setNameFilter] = useState('');
+	const [debouncedNameFilter, setDebouncedNameFilter] = useState('');
 	const [cityFilter, setCityFilter] = useState('');
 	const [highlightOldest, setHighlightOldest] = useState(false);
 
@@ -33,15 +34,23 @@ const App: React.FC = () => {
 		});
 	}, []);
 
+	// Debounce the name filter
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setDebouncedNameFilter(nameFilter);
+		}, 1000);
+		return () => clearTimeout(timer); // Cleanup the timer on input change
+	}, [nameFilter]);
+
 	useEffect(() => {
 		let filtered = customers.filter(
 			(customer) =>
 				customer.firstName
 					.toLowerCase()
-					.includes(nameFilter.toLowerCase()) ||
+					.includes(debouncedNameFilter.toLowerCase()) ||
 				customer.lastName
 					.toLowerCase()
-					.includes(nameFilter.toLowerCase())
+					.includes(debouncedNameFilter.toLowerCase())
 		);
 		if (cityFilter) {
 			filtered = filtered.filter(
@@ -49,7 +58,7 @@ const App: React.FC = () => {
 			);
 		}
 		setFilteredCustomers(filtered);
-	}, [nameFilter, cityFilter, customers]);
+	}, [debouncedNameFilter, cityFilter, customers]);
 
 	const highlightedIds = new Set<number>();
 	if (highlightOldest) {
