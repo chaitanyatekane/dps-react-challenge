@@ -29,3 +29,8 @@ body {
 	padding: 10px;
 	text-align: left;
 }
+
+.customer-table tr.highlighted {
+	background-color: #d3e8ff;
+	font-weight: bold;
+}

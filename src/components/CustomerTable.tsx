@@ -10,9 +10,13 @@ interface Customer {
 
 interface CustomerTableProps {
 	customers: Customer[];
+	highlightedIds: Set<number>;
 }
 
-const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
+const CustomerTable: React.FC<CustomerTableProps> = ({
+	customers,
+	highlightedIds,
+}) => {
 	return (
 		<table className="customer-table">
 			<thead>
@@ -24,7 +28,12 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
 			</thead>
 			<tbody>
 				{customers.map((customer) => (
-					<tr key={customer.id}>
+					<tr
+						key={customer.id}
+						className={
+							highlightedIds.has(customer.id) ? 'highlighted' : ''
+						}
+					>
 						<td>{`${customer.firstName} ${customer.lastName}`}</td>
 						<td>{customer.city}</td>
 						<td>{customer.birthDate}</td>

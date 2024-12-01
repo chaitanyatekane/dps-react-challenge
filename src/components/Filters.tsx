@@ -4,11 +4,15 @@ interface FiltersProps {
 	onNameChange: (value: string) => void;
 	onCityChange: (value: string) => void;
 	cities: string[];
+	highlightOldest: boolean;
+	toggleHighlight: () => void;
 }
 
 const Filters: React.FC<FiltersProps> = ({
 	onNameChange,
 	onCityChange,
+	highlightOldest,
+	toggleHighlight,
 	cities,
 }) => {
 	return (
@@ -30,8 +34,12 @@ const Filters: React.FC<FiltersProps> = ({
 					</option>
 				))}
 			</select>
-			<label>
-				<input type="checkbox" />
+			<label className="filter-checkbox">
+				<input
+					type="checkbox"
+					checked={highlightOldest}
+					onChange={toggleHighlight}
+				/>
 				Highlight oldest per city
 			</label>
 		</div>

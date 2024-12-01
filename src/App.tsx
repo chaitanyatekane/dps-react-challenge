@@ -17,6 +17,7 @@ const App: React.FC = () => {
 	const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
 	const [nameFilter, setNameFilter] = useState('');
 	const [cityFilter, setCityFilter] = useState('');
+	const [highlightOldest, setHighlightOldest] = useState(false);
 
 	useEffect(() => {
 		axios.get('https://dummyjson.com/users').then((response) => {
@@ -50,17 +51,37 @@ const App: React.FC = () => {
 		setFilteredCustomers(filtered);
 	}, [nameFilter, cityFilter, customers]);
 
+	const highlightedIds = new Set<number>();
+	if (highlightOldest) {
+		const oldestByCity = new Map<string, Customer>();
+		filteredCustomers.forEach((customer) => {
+			const currentOldest = oldestByCity.get(customer.city);
+			if (
+				!currentOldest ||
+				new Date(customer.birthDate) < new Date(currentOldest.birthDate)
+			) {
+				oldestByCity.set(customer.city, customer);
+			}
+		});
+		oldestByCity.forEach((customer) => highlightedIds.add(customer.id));
+	}
+
 	return (
 		<div className="app">
 			<h1>Customer Management</h1>
 			<Filters
 				onNameChange={(value) => setNameFilter(value)}
 				onCityChange={(value) => setCityFilter(value)}
+				highlightOldest={highlightOldest}
+				toggleHighlight={() => setHighlightOldest(!highlightOldest)}
 				cities={[
 					...new Set(customers.map((customer) => customer.city)),
 				]}
 			/>
-			<CustomerTable customers={filteredCustomers} />
+			<CustomerTable
+				customers={filteredCustomers}
+				highlightedIds={highlightedIds}
+			/>
 		</div>
 	);
 };
