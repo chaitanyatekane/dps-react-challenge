@@ -3,9 +3,9 @@ import React from 'react';
 interface FiltersProps {
 	onNameChange: (value: string) => void;
 	onCityChange: (value: string) => void;
-	cities: string[];
 	highlightOldest: boolean;
 	toggleHighlight: () => void;
+	cities: string[];
 }
 
 const Filters: React.FC<FiltersProps> = ({

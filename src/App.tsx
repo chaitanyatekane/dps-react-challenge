@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Filters from './components/Filters';
 import CustomerTable from './components/CustomerTable';
-import axios from 'axios';
 import './App.css';
 
 interface Customer {
@@ -20,6 +20,7 @@ const App: React.FC = () => {
 	const [cityFilter, setCityFilter] = useState('');
 	const [highlightOldest, setHighlightOldest] = useState(false);
 
+	// Fetch customers from API
 	useEffect(() => {
 		axios.get('https://dummyjson.com/users').then((response) => {
 			const users = response.data.users.map((user: any) => ({
@@ -42,6 +43,7 @@ const App: React.FC = () => {
 		return () => clearTimeout(timer); // Cleanup the timer on input change
 	}, [nameFilter]);
 
+	// Filter customers based on name and city
 	useEffect(() => {
 		let filtered = customers.filter(
 			(customer) =>
@@ -60,6 +62,7 @@ const App: React.FC = () => {
 		setFilteredCustomers(filtered);
 	}, [debouncedNameFilter, cityFilter, customers]);
 
+	// Highlight oldest customers per city
 	const highlightedIds = new Set<number>();
 	if (highlightOldest) {
 		const oldestByCity = new Map<string, Customer>();
